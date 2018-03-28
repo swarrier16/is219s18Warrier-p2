@@ -33,6 +33,20 @@ function animate() {
 /************* DO NOT TOUCH CODE ABOVE THIS LINE ***************/
 
 /*GET FUNCTION HERE */
+function getQueryParams(qs) {
+	 qs = qs.split("+").join(" ");
+	 var params = {},
+	 tokens,
+	 re = /[?&]?([^=]+)=([^&]*)/g;
+	 while (tokens = re.exec(qs)) {
+	 	params[decodeURIComponent(tokens[1])]
+	 	= decodeURIComponent(tokens[2]);
+	 }
+	 return params;
+} 
+
+var $_GET = getQueryParams(document.location.search);
+console.log($_GET["fname"]); 
 
 function swapPhoto() {
 	//Add code here to access the #slideShow element.
@@ -46,11 +60,7 @@ function swapPhoto() {
 var mCurrentIndex = 0;
 
 // XMLHttpRequest variable
-var mURL = "images.json";
-var mRequest = new XMLHttpRequest();
-// mRequest.addEventListener("load", reqListener);
-mRequest.open("GET", mURL, true);
-mRequest.send();
+// var mRequest = new XMLHttpRequest();
 
 // Array holding GalleryImage objects (see below).
 var mImages = [];
@@ -60,8 +70,24 @@ var mJson = {};
 
 
 // URL for the JSON to load by default
-// Some options for you are: images.json, images.short.json; you will need to create your own extra.json later
-var mUrl = 'insert_url_here_to_image_json';
+var mURL = "images.json";
+var mRequest = new XMLHttpRequest();
+mRequest.onreadystatechange = function() {
+// Do something interesting if file is opened successfully
+	if (mRequest.readyState == 4 && mRequest.status == 200) {
+		try {
+// Let’s try and see if we can parse JSON
+			mJson = JSON.parse(mRequest.responseText);
+// Let’s print out the JSON; It will likely show as "obj"
+			console.log(mJson);
+		} catch(err) {
+			console.log(err.message)
+		}
+	}
+};
+
+mRequest.open("GET",mURL, true);
+mRequest.send();
 
 
 //You can optionally use the following function as your event callback for loading the source of Images from your json data (for HTMLImageObject).
@@ -93,7 +119,7 @@ var GalleryImage = new function(location, description, date, img) {
     this.img = img;
     
     };
-}
+
 
 
 
