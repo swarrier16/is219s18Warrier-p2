@@ -46,7 +46,12 @@ function getQueryParams(qs) {
 } 
 
 var $_GET = getQueryParams(document.location.search);
-console.log($_GET["fname"]); 
+//console.log($_GET["fname"]); 
+
+var mUrl = "images.json";
+if ($_GET["json"] != undefined){
+	mUrl = $_GET["json"];
+}
 
 function swapPhoto() {
 	//Add code here to access the #slideShow element.
@@ -73,15 +78,17 @@ var mJson = {};
 var mURL = "images.json";
 var mRequest = new XMLHttpRequest();
 mRequest.onreadystatechange = function() {
-// Do something interesting if file is opened successfully
 	if (mRequest.readyState == 4 && mRequest.status == 200) {
 		try {
-// Let’s try and see if we can parse JSON
 			mJson = JSON.parse(mRequest.responseText);
-// Let’s print out the JSON; It will likely show as "obj"
 			console.log(mJson);
+			for (var i=0; i<mJson.images.length; i++){
+				console.log("check: " + mJson.images[i].location);
+				var myLine = mJson.images[i];
+				mImages.push(new GalleryImage(myLine.location, myLine.description, myLine.date, myLine.img))
+			}
 		} catch(err) {
-			console.log(err.message)
+			console.log(err.message);
 		}
 	}
 };
@@ -99,6 +106,11 @@ function makeGalleryImageOnloadCallback(galleryImage) {
 	}
 }
 
+ $('.moreIndicator').click(function(){
+ 		console.log('clicked');
+ });
+
+
 $(document).ready( function() {
 	
 	// This initially hides the photos' metadata information
@@ -112,12 +124,11 @@ window.addEventListener('load', function() {
 
 }, false);
 
-var GalleryImage = new function(location, description, date, img) {
+function GalleryImage (location, description, date, img) {
     this.location = location;
     this.description = description;
     this.date = date;
-    this.img = img;
-    
+    this.img = img;    
     };
 
 
