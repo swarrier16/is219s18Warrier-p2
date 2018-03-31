@@ -31,7 +31,8 @@ body {
 	z-index: 3;
 	opacity: .8;
 	top: 105px;
-	margin: 230px;
+	margin: 240px;
+	margin-left: 260px;
 }
 
 .thumbnail {

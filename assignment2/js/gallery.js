@@ -54,18 +54,21 @@ if ($_GET["json"] != undefined){
 }
 
 function swapPhoto() {
-	//Add code here to access the #slideShow element.
-	//Access the img element and replace its source
-	//with a new image from your images array which is loaded 
-	//from the JSON string
-	console.log('swap photo');
+	if(mCurrentIndex >= mImages.length){
+		mCurrentIndex = 1;
+	}
+
+	mCurrentIndex ++; 
+	var currentImg = mImages[mCurrentIndex];
+
+	//$("#slideShow").attr("src","www.google.com");
+
+	console.log('swap photo:');
+
+	//document.getElementById("photo").src = currentImg.img;
+	$('#photo').attr('src', currentImg.img);
+	
 }
-
-// Counter for the mImages array
-var mCurrentIndex = 0;
-
-// XMLHttpRequest variable
-// var mRequest = new XMLHttpRequest();
 
 // Array holding GalleryImage objects (see below).
 var mImages = [];
@@ -73,7 +76,7 @@ var mImages = [];
 // Holds the retrived JSON information
 var mJson = {};
 
-
+var mCurrentIndex = 1;
 // URL for the JSON to load by default
 var mURL = "images.json";
 var mRequest = new XMLHttpRequest();
@@ -83,13 +86,13 @@ mRequest.onreadystatechange = function() {
 			mJson = JSON.parse(mRequest.responseText);
 			console.log(mJson);
 			for (var i=0; i<mJson.images.length; i++){
-				console.log("check: " + mJson.images[i].location);
-				var myLine = mJson.images[i];
-				mImages.push(new GalleryImage(myLine.location, myLine.description, myLine.date, myLine.img))
+				var checkLine = mJson.images[i];
+				mImages.push(new GalleryImage(checkLine.imgLocation, checkLine.description, checkLine.date, checkLine.imgPath));
 			}
 		} catch(err) {
 			console.log(err.message);
 		}
+
 	}
 };
 
@@ -124,7 +127,7 @@ window.addEventListener('load', function() {
 
 }, false);
 
-function GalleryImage (location, description, date, img) {
+var GalleryImage = function (location, description, date, img) {
     this.location = location;
     this.description = description;
     this.date = date;
