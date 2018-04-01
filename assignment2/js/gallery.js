@@ -46,11 +46,12 @@ function getQueryParams(qs) {
 } 
 
 var $_GET = getQueryParams(document.location.search);
-//console.log($_GET["fname"]); 
+//console.log($_GET["json"]);
 
-var mUrl = "images.json";
+var mURL = "images.json";
 if ($_GET["json"] != undefined){
 	mUrl = $_GET["json"];
+	console.log($_GET["json"]);
 }
 
 function swapPhoto() {
@@ -97,7 +98,7 @@ var mJson = {};
 
 var mCurrentIndex = 1;
 // URL for the JSON to load by default
-var mURL = "images.json";
+//var mURL = "images.json";
 var mRequest = new XMLHttpRequest();
 mRequest.onreadystatechange = function() {
 	if (mRequest.readyState == 4 && mRequest.status == 200) {
@@ -115,8 +116,14 @@ mRequest.onreadystatechange = function() {
 	}
 };
 
-mRequest.open("GET",mURL, true);
+if ($_GET["json"] != undefined){
+	mUrl = $_GET["json"];
+	console.log($_GET["json"]);
+}
+
+mRequest.open("GET", mURL, true);
 mRequest.send();
+console.log(mURL);
 
 
 //You can optionally use the following function as your event callback for loading the source of Images from your json data (for HTMLImageObject).
@@ -149,6 +156,9 @@ $(document).ready( function() {
 			$('.moreIndicator').removeClass('rot270');
 			$('.details').eq(0).slideUp();
 		}
+
+
+
 		console.log("Button Clicked!");
 	});
 
