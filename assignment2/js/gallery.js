@@ -61,12 +61,32 @@ function swapPhoto() {
 	mCurrentIndex ++; 
 	var currentImg = mImages[mCurrentIndex];
 
-	console.log('swap photo:');
+	// console.log('swap photo:');
 
 	$('#photo').attr('src', currentImg.img);
 	$(".location").html("Location: " + currentImg.location);
 	$(".description").html("Description: " + currentImg.description);
 	$(".date").html("Date: " + currentImg.date);
+
+	
+}
+
+function swapPhotoBack() {
+	if(mCurrentIndex <=  0){
+		mCurrentIndex = mImages.length - 1;
+	}
+
+	mCurrentIndex --; 
+	var currentImg = mImages[mCurrentIndex];
+
+	// console.log('swap photo:');
+
+	$('#photo').attr('src', currentImg.img);
+	$(".location").html("Location: " + currentImg.location);
+	$(".description").html("Description: " + currentImg.description);
+	$(".date").html("Date: " + currentImg.date);
+
+	
 }
 
 // Array holding GalleryImage objects (see below).
@@ -130,9 +150,17 @@ $(document).ready( function() {
 			$('.details').eq(0).slideUp();
 		}
 		console.log("Button Clicked!");
-		});
-		
-	
+	});
+
+	$('#prevPhoto').click(function() {
+		console.log(mCurrentIndex);
+		swapPhotoBack();		
+	});
+
+	$('#nextPhoto').on('click', function() {
+		swapPhoto();	
+		//console.log("Button Clicked!");
+	});
 	
 });
 
