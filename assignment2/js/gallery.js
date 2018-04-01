@@ -32,29 +32,91 @@ function animate() {
 
 /************* DO NOT TOUCH CODE ABOVE THIS LINE ***************/
 
-function swapPhoto() {
-	//Add code here to access the #slideShow element.
-	//Access the img element and replace its source
-	//with a new image from your images array which is loaded 
-	//from the JSON string
-	console.log('swap photo');
+/*GET FUNCTION HERE */
+function getQueryParams(qs) {
+	 qs = qs.split("+").join(" ");
+	 var params = {},
+	 tokens,
+	 re = /[?&]?([^=]+)=([^&]*)/g;
+	 while (tokens = re.exec(qs)) {
+	 	params[decodeURIComponent(tokens[1])]
+	 	= decodeURIComponent(tokens[2]);
+	 }
+	 return params;
+} 
+
+var $_GET = getQueryParams(document.location.search);
+//console.log($_GET["fname"]); 
+
+var mUrl = "images.json";
+if ($_GET["json"] != undefined){
+	mUrl = $_GET["json"];
 }
 
-// Counter for the mImages array
-var mCurrentIndex = 0;
+function swapPhoto() {
+	if(mCurrentIndex >= mImages.length){
+		mCurrentIndex = 1;
+	}
 
-// XMLHttpRequest variable
-var mRequest = new XMLHttpRequest();
+	mCurrentIndex ++; 
+	var currentImg = mImages[mCurrentIndex];
+
+	// console.log('swap photo:');
+
+	$('#photo').attr('src', currentImg.img);
+	$(".location").html("Location: " + currentImg.location);
+	$(".description").html("Description: " + currentImg.description);
+	$(".date").html("Date: " + currentImg.date);
+
+	
+}
+
+function swapPhotoBack() {
+	if(mCurrentIndex <=  0){
+		mCurrentIndex = mImages.length - 1;
+	}
+
+	mCurrentIndex --; 
+	var currentImg = mImages[mCurrentIndex];
+
+	// console.log('swap photo:');
+
+	$('#photo').attr('src', currentImg.img);
+	$(".location").html("Location: " + currentImg.location);
+	$(".description").html("Description: " + currentImg.description);
+	$(".date").html("Date: " + currentImg.date);
+
+	
+}
 
 // Array holding GalleryImage objects (see below).
 var mImages = [];
 
 // Holds the retrived JSON information
-var mJson;
+var mJson = {};
 
+var mCurrentIndex = 1;
 // URL for the JSON to load by default
-// Some options for you are: images.json, images.short.json; you will need to create your own extra.json later
-var mUrl = 'insert_url_here_to_image_json';
+var mURL = "images.json";
+var mRequest = new XMLHttpRequest();
+mRequest.onreadystatechange = function() {
+	if (mRequest.readyState == 4 && mRequest.status == 200) {
+		try {
+			mJson = JSON.parse(mRequest.responseText);
+			console.log(mJson);
+			for (var i=0; i<mJson.images.length; i++){
+				var checkLine = mJson.images[i];
+				mImages.push(new GalleryImage(checkLine.imgLocation, checkLine.description, checkLine.date, checkLine.imgPath));
+			}
+		} catch(err) {
+			console.log(err.message);
+		}
+
+	}
+};
+
+mRequest.open("GET",mURL, true);
+mRequest.send();
 
 
 //You can optionally use the following function as your event callback for loading the source of Images from your json data (for HTMLImageObject).
@@ -66,10 +128,39 @@ function makeGalleryImageOnloadCallback(galleryImage) {
 	}
 }
 
+ $('.moreIndicator').click(function(){
+ 		console.log('clicked');
+ });
+
+
 $(document).ready( function() {
 	
 	// This initially hides the photos' metadata information
 	$('.details').eq(0).hide();
+	
+	$('.moreIndicator').on('click', function() {
+		if ($(this).hasClass("rot90")) {
+			$('.moreIndicator').addClass('rot270');
+			$('.moreIndicator').removeClass('rot90');
+			$('.details').eq(0).slideDown();
+		}
+		else{
+			$('.moreIndicator').addClass('rot90');
+			$('.moreIndicator').removeClass('rot270');
+			$('.details').eq(0).slideUp();
+		}
+		console.log("Button Clicked!");
+	});
+
+	$('#prevPhoto').click(function() {
+		console.log(mCurrentIndex);
+		swapPhotoBack();		
+	});
+
+	$('#nextPhoto').on('click', function() {
+		swapPhoto();	
+		//console.log("Button Clicked!");
+	});
 	
 });
 
@@ -79,10 +170,17 @@ window.addEventListener('load', function() {
 
 }, false);
 
-function GalleryImage() {
-	//implement me as an object to hold the following data about an image:
-	//1. location where photo was taken
-	//2. description of photo
-	//3. the date when the photo was taken
-	//4. either a String (src URL) or an an HTMLImageObject (bitmap of the photo. https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement)
-}
+var GalleryImage = function (location, description, date, img) {
+    this.location = location;
+    this.description = description;
+    this.date = date;
+    this.img = img;    
+    };
+
+
+
+
+
+
+
+
