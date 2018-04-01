@@ -51,10 +51,20 @@ body {
 	position: relative;
 }
 
+#nav:hover {
+	clear: both;
+	position: relative;
+}
+
+
 #prevPhoto {
 	height: 42px;
 	width: 42px;
 	transform: rotate(180deg);
+}
+
+#prevPhoto {
+	opacity: 0.8;
 }
 
 #nextPhoto {
