@@ -61,13 +61,12 @@ function swapPhoto() {
 	mCurrentIndex ++; 
 	var currentImg = mImages[mCurrentIndex];
 
-	//$("#slideShow").attr("src","www.google.com");
-
 	console.log('swap photo:');
 
-	//document.getElementById("photo").src = currentImg.img;
 	$('#photo').attr('src', currentImg.img);
-	
+	$(".location").html("Location: " + currentImg.location);
+	$(".description").html("Description: " + currentImg.description);
+	$(".date").html("Date: " + currentImg.date);
 }
 
 // Array holding GalleryImage objects (see below).
@@ -118,6 +117,22 @@ $(document).ready( function() {
 	
 	// This initially hides the photos' metadata information
 	$('.details').eq(0).hide();
+	
+	$('.moreIndicator').on('click', function() {
+		if ($(this).hasClass("rot90")) {
+			$('.moreIndicator').addClass('rot270');
+			$('.moreIndicator').removeClass('rot90');
+			$('.details').eq(0).slideDown();
+		}
+		else{
+			$('.moreIndicator').addClass('rot90');
+			$('.moreIndicator').removeClass('rot270');
+			$('.details').eq(0).slideUp();
+		}
+		console.log("Button Clicked!");
+		});
+		
+	
 	
 });
 
