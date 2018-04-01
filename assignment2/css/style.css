@@ -30,9 +30,9 @@ body {
 	position: absolute;
 	z-index: 3;
 	opacity: .8;
-	top: 105px;
-	margin: 240px;
-	margin-left: 260px;
+	top: 330px;
+	left:300px;
+	vertical-align: center;
 }
 
 .thumbnail {
@@ -51,9 +51,8 @@ body {
 	position: relative;
 }
 
-#nav:hover {
-	clear: both;
-	position: relative;
+#prevPhoto:hover, #nextPhoto:hover {
+	opacity: 0.8;
 }
 
 
@@ -63,9 +62,6 @@ body {
 	transform: rotate(180deg);
 }
 
-#prevPhoto {
-	opacity: 0.8;
-}
 
 #nextPhoto {
 	height: 42px;
@@ -76,6 +72,7 @@ body {
 .details p {
 	margin-top: 20px;
 }
+
 .details {
 	border: 1px #000 dashed;
 	padding: 0px 10px;
