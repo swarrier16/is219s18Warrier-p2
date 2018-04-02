@@ -1,0 +1,34 @@
+{
+    "images": [
+        {
+            "imgPath": "img/places/china.jpg",
+            "imgLocation": "China",
+            "description": "Beijing",
+            "date": "03/27/2018"
+        },
+        {
+            "imgPath": "img/places/sweden.jpg",
+            "imgLocation": "Sweden",
+            "description": "Stockholm",
+            "date": "03/28/2018"
+        },
+        {
+            "imgPath": "img/places/usa.jpg",
+            "imgLocation": "United States",
+            "description": "Los Angeles",
+            "date": "03/29/2018"
+        },
+        {
+            "imgPath": "img/places/brazil.jpg",
+            "imgLocation": "Brazil",
+            "description": "Christ the Redeemer (Rio de Janiero)",
+            "date": "03/30/2018"
+        },
+        {
+            "imgPath": "img/places/scotland.jpg",
+            "imgLocation": "Scotland",
+            "description": "Cairn Toul",
+            "date": "03/30/2018"
+        }
+  ]
+}
