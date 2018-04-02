@@ -48,15 +48,9 @@ function getQueryParams(qs) {
 var $_GET = getQueryParams(document.location.search);
 //console.log($_GET["json"]);
 
-var mURL = "images.json";
-if ($_GET["json"] != undefined){
-	mUrl = $_GET["json"];
-	console.log($_GET["json"]);
-}
-
 function swapPhoto() {
-	if(mCurrentIndex >= mImages.length){
-		mCurrentIndex = 1;
+	if(mCurrentIndex >= mImages.length - 1){
+		mCurrentIndex = -1;
 	}
 
 	mCurrentIndex ++; 
@@ -74,7 +68,7 @@ function swapPhoto() {
 
 function swapPhotoBack() {
 	if(mCurrentIndex <=  0){
-		mCurrentIndex = mImages.length - 1;
+		mCurrentIndex = mImages.length;
 	}
 
 	mCurrentIndex --; 
@@ -96,9 +90,10 @@ var mImages = [];
 // Holds the retrived JSON information
 var mJson = {};
 
-var mCurrentIndex = 1;
+var mCurrentIndex = 0;
 // URL for the JSON to load by default
-//var mURL = "images.json";
+
+
 var mRequest = new XMLHttpRequest();
 mRequest.onreadystatechange = function() {
 	if (mRequest.readyState == 4 && mRequest.status == 200) {
@@ -116,14 +111,25 @@ mRequest.onreadystatechange = function() {
 	}
 };
 
-if ($_GET["json"] != undefined){
-	mUrl = $_GET["json"];
-	console.log($_GET["json"]);
+
+if ($_GET["json"] === undefined){
+	$_GET["json"] = 'images.json';
+	var mUrl = $_GET["json"];
+	mRequest.open("GET", "images.json", true);
+	mRequest.send();
+	// console.log($_GET["json"]);
+	// console.log(mUrl);
+}
+else{
+	var mURL = $_GET["json"];
+	mRequest.open("GET", mURL, true);
+	mRequest.send();
 }
 
-mRequest.open("GET", mURL, true);
-mRequest.send();
-console.log(mURL);
+
+// mRequest.open("GET", mURL, true);
+// mRequest.send();
+
 
 
 //You can optionally use the following function as your event callback for loading the source of Images from your json data (for HTMLImageObject).
@@ -169,10 +175,12 @@ $(document).ready( function() {
 
 	$('#nextPhoto').on('click', function() {
 		swapPhoto();	
-		//console.log("Button Clicked!");
+		console.log(mCurrentIndex);
 	});
+
 	
-});
+		
+	});
 
 window.addEventListener('load', function() {
 	
